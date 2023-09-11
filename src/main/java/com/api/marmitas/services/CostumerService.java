@@ -37,10 +37,6 @@ public class CostumerService {
     }
 
     public CostumerOutputDTO create(CostumerCreateDTO costumerCreateDTO) {
-        if (costumerCreateDTO.getId() != null) {
-            throw new RuntimeException("Id não pode ser informado para criação de um registro.");
-        }
-
         Costumer costumer = this.modelMapper.map(costumerCreateDTO, Costumer.class);
         return modelMapper.map(this.costumerRepository.save(costumer), CostumerOutputDTO.class);
     }

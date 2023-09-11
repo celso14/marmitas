@@ -1,6 +1,7 @@
 package com.api.marmitas.dtos.output;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.springframework.validation.annotation.Validated;
 
@@ -15,6 +16,7 @@ public class CostumerOutputDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @NotNull
+    @NotBlank
     private Long id;
 
     @NotNull
@@ -32,4 +34,6 @@ public class CostumerOutputDTO implements Serializable {
     @NotNull
     @NotBlank
     private String phoneNumber;
+
+    List<AddressOutputDTO> adresses;
 }

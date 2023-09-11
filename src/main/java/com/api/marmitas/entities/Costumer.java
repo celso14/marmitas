@@ -1,15 +1,19 @@
 package com.api.marmitas.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -40,4 +44,8 @@ public class Costumer implements Serializable {
 
     @Column(nullable = false, columnDefinition = "boolean default true")
     private Boolean status = true;
+
+    // @JoinColumn(name = "course_id") não recomendo pelo problema sql n+1
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "costumer")
+    private List<Address> adresses = new ArrayList<>();
 }

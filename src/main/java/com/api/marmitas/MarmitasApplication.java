@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.marmitas.entities.Address;
 import com.api.marmitas.entities.Costumer;
 import com.api.marmitas.repositories.CostumerRepository;
 
@@ -40,6 +41,18 @@ public class MarmitasApplication {
 				c.setLastName(lastNames[i]);
 				c.setNickName(nickNames[i]);
 				c.setPhoneNumber(phoneNumbers[i]);
+
+				Address a = new Address();
+				a.setName("São Miguel");
+				a.setAddressLocation("Rua");
+				a.setNumber("573");
+				a.setNeighborhood("Jurunas");
+				a.setAddressType("Casa");
+				a.setReference("Entre Apinagés e Tupinanbás, apt 1501");
+				a.setCostumer(c);
+				a.setStatus(true);
+
+				c.getAdresses().add(a);
 
 				costumerRepository.save(c);
 			}
