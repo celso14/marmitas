@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @Validated
-public class UpdateCostumerInputDTO implements Serializable {
+public class CostumerUpdateDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

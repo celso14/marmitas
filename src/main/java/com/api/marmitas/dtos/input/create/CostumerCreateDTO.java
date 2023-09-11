@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Data
 @Validated
-public class CreateCostumerInputDTO implements Serializable {
+public class CostumerCreateDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

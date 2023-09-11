@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import com.api.marmitas.dtos.input.create.CreateCostumerInputDTO;
-import com.api.marmitas.dtos.input.update.UpdateCostumerInputDTO;
+import com.api.marmitas.dtos.input.create.CostumerCreateDTO;
+import com.api.marmitas.dtos.input.update.CostumerUpdateDTO;
 import com.api.marmitas.dtos.output.CostumerOutputDTO;
 import com.api.marmitas.entities.Costumer;
 import com.api.marmitas.exceptions.NotFoundException;
@@ -36,32 +36,32 @@ public class CostumerService {
         return modelMapper.map(costumer, CostumerOutputDTO.class);
     }
 
-    public CostumerOutputDTO create(CreateCostumerInputDTO createCostumerDTO) {
-        if (createCostumerDTO.getId() != null) {
+    public CostumerOutputDTO create(CostumerCreateDTO costumerCreateDTO) {
+        if (costumerCreateDTO.getId() != null) {
             throw new RuntimeException("Id não pode ser informado para criação de um registro.");
         }
 
-        Costumer costumer = this.modelMapper.map(createCostumerDTO, Costumer.class);
+        Costumer costumer = this.modelMapper.map(costumerCreateDTO, Costumer.class);
         return modelMapper.map(this.costumerRepository.save(costumer), CostumerOutputDTO.class);
     }
 
-    public CostumerOutputDTO update(Long id, UpdateCostumerInputDTO updateCostumerDTO) {
+    public CostumerOutputDTO update(Long id, CostumerUpdateDTO costumerUpdateDTO) {
         Costumer costumer = this.costumerRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
 
-        if (updateCostumerDTO.getFirstName() != null && !updateCostumerDTO.getFirstName().equals(costumer.getFirstName())) {
-            costumer.setFirstName(updateCostumerDTO.getFirstName());
+        if (costumerUpdateDTO.getFirstName() != null && !costumerUpdateDTO.getFirstName().equals(costumer.getFirstName())) {
+            costumer.setFirstName(costumerUpdateDTO.getFirstName());
         }
     
-        if (updateCostumerDTO.getLastName() != null && !updateCostumerDTO.getLastName().equals(costumer.getLastName())) {
-            costumer.setLastName(updateCostumerDTO.getLastName());
+        if (costumerUpdateDTO.getLastName() != null && !costumerUpdateDTO.getLastName().equals(costumer.getLastName())) {
+            costumer.setLastName(costumerUpdateDTO.getLastName());
         }
     
-        if (updateCostumerDTO.getNickName() != null && !updateCostumerDTO.getNickName().equals(costumer.getNickName())) {
-            costumer.setNickName(updateCostumerDTO.getNickName());
+        if (costumerUpdateDTO.getNickName() != null && !costumerUpdateDTO.getNickName().equals(costumer.getNickName())) {
+            costumer.setNickName(costumerUpdateDTO.getNickName());
         }
     
-        if (updateCostumerDTO.getPhoneNumber() != null && !updateCostumerDTO.getPhoneNumber().equals(costumer.getPhoneNumber())) {
-            costumer.setPhoneNumber(updateCostumerDTO.getPhoneNumber());
+        if (costumerUpdateDTO.getPhoneNumber() != null && !costumerUpdateDTO.getPhoneNumber().equals(costumer.getPhoneNumber())) {
+            costumer.setPhoneNumber(costumerUpdateDTO.getPhoneNumber());
         }
 
         return modelMapper.map(this.costumerRepository.save(costumer), CostumerOutputDTO.class);

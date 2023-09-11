@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.marmitas.dtos.input.create.CreateCostumerInputDTO;
-import com.api.marmitas.dtos.input.update.UpdateCostumerInputDTO;
+import com.api.marmitas.dtos.input.create.CostumerCreateDTO;
+import com.api.marmitas.dtos.input.update.CostumerUpdateDTO;
 import com.api.marmitas.dtos.output.CostumerOutputDTO;
 import com.api.marmitas.services.CostumerService;
 
@@ -44,14 +44,14 @@ public class CostumerController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public CostumerOutputDTO create(@RequestBody @Validated CreateCostumerInputDTO costumerInputDTO) {
-        return this.costumerService.create(costumerInputDTO);
+    public CostumerOutputDTO create(@RequestBody @Validated CostumerCreateDTO costumerCreateDTO) {
+        return this.costumerService.create(costumerCreateDTO);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public CostumerOutputDTO update(@PathVariable @NotNull @Positive Long id, @RequestBody @Validated UpdateCostumerInputDTO costumerInputDTO) {
-        return this.costumerService.update(id, costumerInputDTO);
+    public CostumerOutputDTO update(@PathVariable @NotNull @Positive Long id, @RequestBody @Validated CostumerUpdateDTO costumerUpdateDTO) {
+        return this.costumerService.update(id, costumerUpdateDTO);
     }
 
     @DeleteMapping("/{id}")
