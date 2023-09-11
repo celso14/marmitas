@@ -10,12 +10,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
 @Entity
-@SQLDelete(sql = "UPDATE Course SET status = false WHERE id = ?")
+@SQLDelete(sql = "UPDATE costumers SET status = false WHERE id = ?")
 @Where(clause = "status = true")
+@Table(name = "costumers")
 public class Costumer implements Serializable {
 
     private static final long serialVersionUID = 1L;
