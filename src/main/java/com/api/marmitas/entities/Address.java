@@ -55,5 +55,5 @@ public class Address implements Serializable {
     private Costumer costumer;
 
     @Column(nullable = false, columnDefinition = "boolean default true")
-    private Boolean status;
+    private Boolean status = true;
 }

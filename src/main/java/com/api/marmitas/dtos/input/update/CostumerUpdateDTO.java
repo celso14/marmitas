@@ -1,6 +1,7 @@
 package com.api.marmitas.dtos.input.update;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.springframework.validation.annotation.Validated;
 
@@ -21,4 +22,6 @@ public class CostumerUpdateDTO implements Serializable {
     private String nickName;
 
     private String phoneNumber;
+
+    private List<AddressUpdateDTO> adresses;
 }

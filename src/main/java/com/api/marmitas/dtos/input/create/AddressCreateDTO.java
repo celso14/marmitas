@@ -1,37 +1,40 @@
 package com.api.marmitas.dtos.input.create;
 
 import java.io.Serializable;
-import java.util.List;
 
 import org.springframework.validation.annotation.Validated;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 @Validated
-public class CostumerCreateDTO implements Serializable {
+public class AddressCreateDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
     @NotBlank
-    private String firstName;
-
     @NotNull
-    @NotBlank
-    private String lastName;
+    private String number;
 
+    @NotBlank
     @NotNull
-    @NotBlank
-    private String nickName;
+    private String addressType;
 
+    @NotBlank
     @NotNull
-    @NotBlank
-    private String phoneNumber;
+    private String name;
 
-    @NotEmpty
-    private List<AddressCreateDTO> adresses;
+    @NotBlank
+    @NotNull
+    private String addressLocation;
+
+    @NotBlank
+    @NotNull
+    private String reference;
+
+    @NotBlank
+    @NotNull
+    private String neighborhood;
 }

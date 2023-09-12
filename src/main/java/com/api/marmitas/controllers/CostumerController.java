@@ -24,7 +24,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/api/costumers")
+@RequestMapping("/api/clientes")
 @Validated
 @AllArgsConstructor
 public class CostumerController {
@@ -50,7 +50,8 @@ public class CostumerController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public CostumerOutputDTO update(@PathVariable @NotNull @Positive Long id, @RequestBody @Validated CostumerUpdateDTO costumerUpdateDTO) {
+    public CostumerOutputDTO update(@PathVariable @NotNull @Positive Long id,
+            @RequestBody @Validated CostumerUpdateDTO costumerUpdateDTO) {
         return this.costumerService.update(id, costumerUpdateDTO);
     }
 

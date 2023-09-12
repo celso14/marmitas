@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.validation.annotation.Validated;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -35,5 +36,6 @@ public class CostumerOutputDTO implements Serializable {
     @NotBlank
     private String phoneNumber;
 
-    List<AddressOutputDTO> adresses;
+    @NotEmpty
+    private List<AddressOutputDTO> adresses;
 }

@@ -38,6 +38,11 @@ public class CostumerService {
 
     public CostumerOutputDTO create(CostumerCreateDTO costumerCreateDTO) {
         Costumer costumer = this.modelMapper.map(costumerCreateDTO, Costumer.class);
+
+        costumer.getAdresses().forEach(address -> {
+            address.setCostumer(costumer);
+        });
+
         return modelMapper.map(this.costumerRepository.save(costumer), CostumerOutputDTO.class);
     }
 

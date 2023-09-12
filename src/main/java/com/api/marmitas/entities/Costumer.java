@@ -16,12 +16,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
 @SQLDelete(sql = "UPDATE costumers SET status = false WHERE id = ?")
 @Where(clause = "status = true")
 @Table(name = "costumers")
+@ToString(exclude = {"adresses"})
 public class Costumer implements Serializable {
 
     private static final long serialVersionUID = 1L;
