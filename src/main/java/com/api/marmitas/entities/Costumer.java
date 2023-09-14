@@ -23,7 +23,7 @@ import lombok.ToString;
 @SQLDelete(sql = "UPDATE costumers SET status = false WHERE id = ?")
 @Where(clause = "status = true")
 @Table(name = "costumers")
-@ToString(exclude = {"adresses"})
+@ToString(exclude = {"adresses"}) // exclui o atributo adresses do toString por causa do problema de recursão 
 public class Costumer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,7 +47,7 @@ public class Costumer implements Serializable {
     @Column(nullable = false, columnDefinition = "boolean default true")
     private Boolean status = true;
 
-    // @JoinColumn(name = "course_id") não recomendo pelo problema sql n+1
+    // @JoinColumn(name = "costumer_id") não recomendo pelo problema sql n+1
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "costumer")
     private List<Address> adresses = new ArrayList<>();
 }

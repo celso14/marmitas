@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.marmitas.dtos.input.update.AddressUpdateDTO;
 import com.api.marmitas.dtos.output.AddressOutputDTO;
-import com.api.marmitas.services.CostumerService;
+import com.api.marmitas.services.AddressService;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -23,11 +23,12 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class AddressController {
 
-    private final CostumerService costumerService;
+    private final AddressService addressService;
 
     @PatchMapping("/{id}")
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    public AddressOutputDTO update(@PathVariable @NotNull @Positive Long id, @RequestBody @Validated AddressUpdateDTO addressUpdateDTO) {
-        return this.costumerService.updateAddress(id, addressUpdateDTO);
+    public AddressOutputDTO update(@PathVariable @NotNull @Positive Long id,
+            @RequestBody @Validated AddressUpdateDTO addressUpdateDTO) {
+        return this.addressService.update(id, addressUpdateDTO);
     }
 }

@@ -7,29 +7,22 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.api.marmitas.dtos.input.create.CostumerCreateDTO;
-import com.api.marmitas.dtos.input.update.AddressUpdateDTO;
 import com.api.marmitas.dtos.input.update.CostumerUpdateDTO;
-import com.api.marmitas.dtos.output.AddressOutputDTO;
 import com.api.marmitas.dtos.output.CostumerOutputDTO;
-import com.api.marmitas.entities.Address;
 import com.api.marmitas.entities.Costumer;
 import com.api.marmitas.exceptions.NotFoundException;
-import com.api.marmitas.repositories.AddressRepository;
 import com.api.marmitas.repositories.CostumerRepository;
 
 @Service
 public class CostumerService {
 
     private final CostumerRepository costumerRepository;
-    private final AddressRepository addressRepository;
-
     private final ModelMapper modelMapper;
 
-    public CostumerService(CostumerRepository costumerRepository, AddressRepository addressRepository,
+    public CostumerService(CostumerRepository costumerRepository,
             ModelMapper modelMapper) {
         this.costumerRepository = costumerRepository;
         this.modelMapper = modelMapper;
-        this.addressRepository = addressRepository;
     }
 
     public List<CostumerOutputDTO> getAll() {
@@ -78,36 +71,6 @@ public class CostumerService {
         }
 
         return this.modelMapper.map(this.costumerRepository.save(costumer), CostumerOutputDTO.class);
-    }
-
-    public AddressOutputDTO updateAddress(Long id, AddressUpdateDTO addressUpdateDTO) {
-        Address address = this.addressRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
-
-        if (addressUpdateDTO.getName() != null) {
-            address.setName(addressUpdateDTO.getName());
-        }
-
-        if (addressUpdateDTO.getNumber() != null) {
-            address.setNumber(addressUpdateDTO.getNumber());
-        }
-
-        if (addressUpdateDTO.getAddressType() != null) {
-            address.setAddressType(addressUpdateDTO.getAddressType());
-        }
-
-        if (addressUpdateDTO.getReference() != null) {
-            address.setReference(addressUpdateDTO.getReference());
-        }
-
-        if (addressUpdateDTO.getNeighborhood() != null) {
-            address.setNeighborhood(addressUpdateDTO.getNeighborhood());
-        }
-
-        if (addressUpdateDTO.getAddressLocation() != null) {
-            address.setAddressLocation(addressUpdateDTO.getAddressLocation());
-        }
-
-        return this.modelMapper.map(this.addressRepository.save(address), AddressOutputDTO.class);
     }
 
     public void delete(Long id) {
