@@ -49,6 +49,12 @@ public class Address implements Serializable {
     @Column(length = 50, nullable = false)
     private String neighborhood;
 
+    @Column(length = 10, nullable = true)
+    private String lat;
+
+    @Column(length = 100, nullable = true)
+    private String lng;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "costumer_id", nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

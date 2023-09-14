@@ -19,7 +19,7 @@ public class MarmitasApplication {
 		SpringApplication.run(MarmitasApplication.class, args);
 	}
 
-	@GetMapping("/hello")
+	@GetMapping("/api/hello")
 	public String sayHello() {
 		return "Olá Mundo!";
 	}
