@@ -50,6 +50,8 @@ public class MarmitasApplication {
 				a.setAddressType("Casa");
 				a.setReference("Entre Apinagés e Tupinanbás, apt 1501");
 				a.setCostumer(c);
+				a.setLat( -1.467237);
+				a.setLng(-48.485901);
 
 				c.getAdresses().add(a);
 
@@ -61,6 +63,8 @@ public class MarmitasApplication {
 				a1.setAddressType("Trabalho");
 				a1.setReference("Espaço Inovação, Portão 5, 1º andar, Solved");
 				a1.setCostumer(c);
+				a1.setLat( -1.464091);
+				a1.setLng(-48.445366);
 
 				c.getAdresses().add(a1);
 

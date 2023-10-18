@@ -37,7 +37,7 @@ public class Address implements Serializable {
     @Column(length = 30, nullable = false)
     private String addressType;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 150, nullable = false)
     private String name;
 
     @Column(length = 30, nullable = false)
@@ -49,11 +49,11 @@ public class Address implements Serializable {
     @Column(length = 50, nullable = false)
     private String neighborhood;
 
-    @Column(length = 10, nullable = true)
-    private String lat;
+    @Column(length = 150, nullable = true)
+    private Double lat;
 
-    @Column(length = 100, nullable = true)
-    private String lng;
+    @Column(length = 150, nullable = true)
+    private Double lng;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "costumer_id", nullable = false)

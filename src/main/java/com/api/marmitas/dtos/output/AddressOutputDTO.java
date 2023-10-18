@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.springframework.validation.annotation.Validated;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -39,4 +40,8 @@ public class AddressOutputDTO implements Serializable {
     @NotBlank
     @NotNull
     private String neighborhood;
+
+    private Double lat;
+
+    private Double lng;
 }

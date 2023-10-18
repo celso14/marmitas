@@ -1,6 +1,7 @@
 package com.api.marmitas.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -10,6 +11,7 @@ import com.api.marmitas.dtos.input.create.CostumerCreateDTO;
 import com.api.marmitas.dtos.input.update.CostumerUpdateDTO;
 import com.api.marmitas.dtos.output.CostumerOutputDTO;
 import com.api.marmitas.entities.Costumer;
+import com.api.marmitas.exceptions.GeoCodeException;
 import com.api.marmitas.exceptions.NotFoundException;
 import com.api.marmitas.repositories.CostumerRepository;
 
@@ -18,11 +20,13 @@ public class CostumerService {
 
     private final CostumerRepository costumerRepository;
     private final ModelMapper modelMapper;
+    private final GeoContextService geoContextService;
 
     public CostumerService(CostumerRepository costumerRepository,
-            ModelMapper modelMapper) {
+            ModelMapper modelMapper, GeoContextService geoContextService) {
         this.costumerRepository = costumerRepository;
         this.modelMapper = modelMapper;
+        this.geoContextService = geoContextService;
     }
 
     public List<CostumerOutputDTO> getAll() {
@@ -41,6 +45,14 @@ public class CostumerService {
         Costumer costumer = this.modelMapper.map(costumerCreateDTO, Costumer.class);
 
         costumer.getAdresses().forEach(address -> {
+            try {
+                Map<String, Double> location = this.geoContextService.getLatLng(address);
+                address.setLat(location.get("lat"));
+                address.setLng(location.get("lng"));
+                System.out.println(location);
+            } catch (Exception e) {
+                throw new GeoCodeException(e.getMessage());
+            }
             address.setCostumer(costumer);
         });
 
