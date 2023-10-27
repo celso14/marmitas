@@ -1,58 +1,36 @@
-package com.api.marmitas.entities;
+package com.api.marmitas.dtos;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-
-@Entity
-@SQLDelete(sql = "UPDATE costumers SET status = false WHERE id = ?")
-@Where(clause = "status = true")
-@Table(name = "clientes")
-public class Costumer implements Serializable {
+public class CostumerDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private Long id;
 
-    @Column(length = 50, nullable = false)
+
     private String firstName;
 
-    @Column(length = 50, nullable = false)
+
     private String lastName;
 
-    @Column(length = 50, nullable = true)
+
     private String nickName;
 
-    @Column(length = 21, nullable = false)
+
     private String phoneNumber;
 
-    @Column(nullable = false, columnDefinition = "boolean default true")
-    private Boolean status = true;
+    private List<AddressDTO> addresses;
 
-    // @JoinColumn(name = "costumer_id") não recomendo pelo problema sql n+1
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "costumer")
-    private List<Address> addresses = new ArrayList<>();
-
-    public Costumer() {
+    public CostumerDTO() {
     }
 
-    public Costumer(String firstName, String lastName, String nickName, String phoneNumber, List<Address> addresses) {
+    public CostumerDTO(Long id, String firstName, String lastName, String nickName, String phoneNumber, List<AddressDTO> addresses) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.nickName = nickName;
@@ -100,19 +78,11 @@ public class Costumer implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    public List<Address> getAddresses() {
+    public List<AddressDTO> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(List<Address> addresses) {
+    public void setAddresses(List<AddressDTO> addresses) {
         this.addresses = addresses;
     }
 
@@ -121,9 +91,9 @@ public class Costumer implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Costumer costumer = (Costumer) o;
+        CostumerDTO that = (CostumerDTO) o;
 
-        return id.equals(costumer.id);
+        return id.equals(that.id);
     }
 
     @Override
@@ -133,13 +103,12 @@ public class Costumer implements Serializable {
 
     @Override
     public String toString() {
-        return new StringBuilder("Costumer{")
+        return new StringBuilder("CostumerDTO{")
         .append("id=").append(id)
         .append(", firstName='").append(firstName).append('\'')
         .append(", lastName='").append(lastName).append('\'')
         .append(", nickName='").append(nickName).append('\'')
         .append(", phoneNumber='").append(phoneNumber).append('\'')
-        .append(", status=").append(status)
         .append(", addresses=").append(addresses)
         .append('}').toString();
     }

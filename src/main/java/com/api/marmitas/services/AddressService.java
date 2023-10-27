@@ -1,15 +1,11 @@
 package com.api.marmitas.services;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
+import com.api.marmitas.dtos.AddressDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import com.api.marmitas.dtos.input.create.AddressCreateDTO;
-import com.api.marmitas.dtos.input.update.AddressUpdateDTO;
-import com.api.marmitas.dtos.output.AddressOutputDTO;
 import com.api.marmitas.entities.Address;
 import com.api.marmitas.entities.Costumer;
 import com.api.marmitas.exceptions.GeoCodeException;
@@ -33,9 +29,9 @@ public class AddressService {
         this.geoContextService = geoContextService;
     }
 
-    public AddressOutputDTO create(Long id, AddressCreateDTO addressCreateDTO) {
+    public AddressDTO create(Long id, AddressDTO addressDTO) {
         Costumer costumer = this.costumerRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
-        Address address = this.modelMapper.map(addressCreateDTO, Address.class);
+        Address address = this.modelMapper.map(addressDTO, Address.class);
 
         try {
             this.geoContextService.getLatLng(address);
@@ -45,15 +41,15 @@ public class AddressService {
 
         address.setCostumer(costumer);
 
-        return this.modelMapper.map(this.addressRepository.save(address), AddressOutputDTO.class);
+        return this.modelMapper.map(this.addressRepository.save(address), AddressDTO.class);
     }
 
-    public AddressOutputDTO update(Long id, AddressUpdateDTO addressUpdateDTO) {
+    public AddressDTO update(Long id, AddressDTO addressDTO) {
         Address address = this.addressRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
-        
-        boolean newGeoCodeRequestIsRequired = 
-            (addressUpdateDTO.getName() == null) || (addressUpdateDTO.getNumber() == null) || (addressUpdateDTO.getAddressType() == null);
-    
+
+        boolean newGeoCodeRequestIsRequired =
+            (addressDTO.getName() == null) || (addressDTO.getNumber() == null) || (addressDTO.getAddressType() == null);
+
         if (newGeoCodeRequestIsRequired) {
             try {
                 Map<String, Double> location = this.geoContextService.getLatLng(address);
@@ -64,28 +60,32 @@ public class AddressService {
             }
         }
 
-        if (addressUpdateDTO.getName() != null) address.setName(addressUpdateDTO.getName());
-        if (addressUpdateDTO.getNumber() != null) address.setNumber(addressUpdateDTO.getNumber());
-        if (addressUpdateDTO.getAddressType() != null) address.setAddressType(addressUpdateDTO.getAddressType());
-        if (addressUpdateDTO.getReference() != null) address.setReference(addressUpdateDTO.getReference());
-        if (addressUpdateDTO.getNeighborhood() != null) address.setNeighborhood(addressUpdateDTO.getNeighborhood());
-        if (addressUpdateDTO.getAddressLocation() != null) address.setAddressLocation(addressUpdateDTO.getAddressLocation());
-    
-        return this.modelMapper.map(this.addressRepository.save(address), AddressOutputDTO.class);
+        if (addressDTO.getName() != null) address.setName(addressDTO.getName());
+        if (addressDTO.getNumber() != null) address.setNumber(addressDTO.getNumber());
+        if (addressDTO.getAddressType() != null) address.setAddressType(addressDTO.getAddressType());
+        if (addressDTO.getReference() != null) address.setReference(addressDTO.getReference());
+        if (addressDTO.getNeighborhood() != null) address.setNeighborhood(addressDTO.getNeighborhood());
+        if (addressDTO.getAddressLocation() != null) address.setAddressLocation(addressDTO.getAddressLocation());
+
+        return this.modelMapper.map(this.addressRepository.save(address), AddressDTO.class);
     }
 
-    public List<Map<String, Double>> routePlanner(List<Long> listID) {
-        List<Address> addresses = this.addressRepository.findAllById(listID);
-        List<Map<String, Double>> locationList = null;
+    public List<HashMap<String, String>> routePlanner(List<AddressDTO> addressDTOS) {
+        String[] listLatLng = addressDTOS.stream().map(address -> address.getLat() + "," + address.getLng()).toList().toArray(new String[addressDTOS.size()]);
 
-        if (addresses.isEmpty()) {
-            throw new GeoCodeException("Endereços não encontrados");
+        var routeOrder = this.geoContextService.getRoutePlanner(listLatLng);
+
+        List<HashMap<String, String>> addressOrder = new ArrayList<>();
+
+        for (int i = 0; i < routeOrder.length; i++) {
+            addressOrder.add(new HashMap<>());
+            var address = addressDTOS.get(i);
+
+            addressOrder.get(i).put("Address", address.getAddressType() + " - " + address.getAddressLocation() + " " +
+                    address.getName() + " - " + address.getNumber() + " - " + address.getNeighborhood() + " -" + address.getReference());
+            addressOrder.get(i).put("Position", String.valueOf(routeOrder[i]));
         }
 
-        locationList = addresses.stream().map(address -> Map.of("lat", address.getLat(), "lng", address.getLng())).toList();
-
-        
-        
-        return locationList;
+        return addressOrder;
     }
 }

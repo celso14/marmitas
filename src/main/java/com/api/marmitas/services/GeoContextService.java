@@ -5,12 +5,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.google.maps.*;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.TravelMode;
+import org.aspectj.weaver.ast.Instanceof;
 import org.springframework.stereotype.Service;
 
 import com.api.marmitas.entities.Address;
-import com.google.maps.DistanceMatrixApi;
-import com.google.maps.GeoApiContext;
-import com.google.maps.GeocodingApi;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
@@ -36,13 +37,23 @@ public class GeoContextService {
         return getGeoCodingData(addressBuilder.toString());
     }
 
-    // public void getRoutePlannerList(List<Map<String, Double>> locationsList) {
-    //     LatLng[] locations = new LatLng[locationsList.size()];
-    //     LatLng origin = new LatLng(-1.467237, -48.485901);
-    //     locations = locationsList.stream().map(location -> new LatLng(location.get("lat"), location.get("lng"))).toArray(LatLng[]::new);
-    //     var result = DistanceMatrixApi.getDistanceMatrix(context, origin, locations);
-    //     System.out.println(result);
-    // }
+    public int[] getRoutePlanner(String[] locations) {
+        int[] waypoints = new int[locations.length];
+        try {
+            DirectionsResult result = DirectionsApi.newRequest(context)
+                    .mode(TravelMode.DRIVING)
+                    .origin("-1.467237,-48.485901")
+                    .optimizeWaypoints(true)
+                    .waypoints(locations)
+                    .destination("-1.467237,-48.485901")
+                    .await();
+            waypoints = result.routes[0].waypointOrder;
+        }
+        catch (ApiException | InterruptedException | IOException e){
+            e.printStackTrace();
+        }
+        return waypoints;
+    }
 
     private Map<String, Double> getGeoCodingData(String address) {
         Map<String, Double> location = null;

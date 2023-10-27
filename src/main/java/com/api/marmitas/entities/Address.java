@@ -1,5 +1,6 @@
 package com.api.marmitas.entities;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.hibernate.annotations.SQLDelete;
@@ -16,15 +17,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Data;
 
 @Entity
-@Data
-@Table(name = "adresses")
+@Table(name = "enderecos")
 @SQLDelete(sql = "UPDATE adresses SET status = false WHERE id = ?")
 @Where(clause = "status = true")
 public class Address implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -62,4 +62,139 @@ public class Address implements Serializable {
 
     @Column(nullable = false, columnDefinition = "boolean default true")
     private Boolean status = true;
+
+    public Address() {
+    }
+
+    public Address(String number, String addressType, String name, String addressLocation, String reference, String neighborhood, Double lat, Double lng, Costumer costumer) {
+        this.number = number;
+        this.addressType = addressType;
+        this.name = name;
+        this.addressLocation = addressLocation;
+        this.reference = reference;
+        this.neighborhood = neighborhood;
+        this.lat = lat;
+        this.lng = lng;
+        this.costumer = costumer;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getAddressType() {
+        return addressType;
+    }
+
+    public void setAddressType(String addressType) {
+        this.addressType = addressType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddressLocation() {
+        return addressLocation;
+    }
+
+    public void setAddressLocation(String addressLocation) {
+        this.addressLocation = addressLocation;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public String getNeighborhood() {
+        return neighborhood;
+    }
+
+    public void setNeighborhood(String neighborhood) {
+        this.neighborhood = neighborhood;
+    }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLng() {
+        return lng;
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
+    }
+
+    public Costumer getCostumer() {
+        return costumer;
+    }
+
+    public void setCostumer(Costumer costumer) {
+        this.costumer = costumer;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Address address = (Address) o;
+
+        return id.equals(address.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder("Address{")
+        .append("id=").append(id)
+        .append(", number='").append(number).append('\'')
+        .append(", addressType='").append(addressType).append('\'')
+        .append(", name='").append(name).append('\'')
+        .append(", addressLocation='").append(addressLocation).append('\'')
+        .append(", reference='").append(reference).append('\'')
+        .append(", neighborhood='").append(neighborhood).append('\'')
+        .append(", lat=").append(lat)
+        .append(", lng=").append(lng)
+        .append(", costumer=").append(costumer)
+        .append(", status=").append(status)
+        .append('}').toString();
+    }
 }

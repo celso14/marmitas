@@ -4,12 +4,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.api.marmitas.dtos.CostumerDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import com.api.marmitas.dtos.input.create.CostumerCreateDTO;
-import com.api.marmitas.dtos.input.update.CostumerUpdateDTO;
-import com.api.marmitas.dtos.output.CostumerOutputDTO;
 import com.api.marmitas.entities.Costumer;
 import com.api.marmitas.exceptions.GeoCodeException;
 import com.api.marmitas.exceptions.NotFoundException;
@@ -29,22 +27,22 @@ public class CostumerService {
         this.geoContextService = geoContextService;
     }
 
-    public List<CostumerOutputDTO> getAll() {
+    public List<CostumerDTO> getAll() {
         return this.costumerRepository.findAll().stream()
-                .map(costumer -> this.modelMapper.map(costumer, CostumerOutputDTO.class))
+                .map(costumer -> this.modelMapper.map(costumer, CostumerDTO.class))
                 .collect(Collectors.toList());
     }
 
-    public CostumerOutputDTO findById(Long id) {
+    public CostumerDTO findById(Long id) {
         Costumer costumer = this.costumerRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(id));
-        return this.modelMapper.map(costumer, CostumerOutputDTO.class);
+        return this.modelMapper.map(costumer, CostumerDTO.class);
     }
 
-    public CostumerOutputDTO create(CostumerCreateDTO costumerCreateDTO) {
-        Costumer costumer = this.modelMapper.map(costumerCreateDTO, Costumer.class);
+    public CostumerDTO create(CostumerDTO costumerDTO) {
+        Costumer costumer = this.modelMapper.map(costumerDTO, Costumer.class);
 
-        costumer.getAdresses().forEach(address -> {
+        costumer.getAddresses().forEach(address -> {
             try {
                 Map<String, Double> location = this.geoContextService.getLatLng(address);
                 address.setLat(location.get("lat"));
@@ -56,33 +54,33 @@ public class CostumerService {
             address.setCostumer(costumer);
         });
 
-        return this.modelMapper.map(this.costumerRepository.save(costumer), CostumerOutputDTO.class);
+        return this.modelMapper.map(this.costumerRepository.save(costumer), CostumerDTO.class);
     }
 
-    public CostumerOutputDTO update(Long id, CostumerUpdateDTO costumerUpdateDTO) {
+    public CostumerDTO update(Long id, CostumerDTO costumerDTO) {
         Costumer costumer = this.costumerRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
 
-        if (costumerUpdateDTO.getFirstName() != null
-                && !costumerUpdateDTO.getFirstName().equals(costumer.getFirstName())) {
-            costumer.setFirstName(costumerUpdateDTO.getFirstName());
+        if (costumerDTO.getFirstName() != null
+                && !costumerDTO.getFirstName().equals(costumer.getFirstName())) {
+            costumer.setFirstName(costumerDTO.getFirstName());
         }
 
-        if (costumerUpdateDTO.getLastName() != null
-                && !costumerUpdateDTO.getLastName().equals(costumer.getLastName())) {
-            costumer.setLastName(costumerUpdateDTO.getLastName());
+        if (costumerDTO.getLastName() != null
+                && !costumerDTO.getLastName().equals(costumer.getLastName())) {
+            costumer.setLastName(costumerDTO.getLastName());
         }
 
-        if (costumerUpdateDTO.getNickName() != null
-                && !costumerUpdateDTO.getNickName().equals(costumer.getNickName())) {
-            costumer.setNickName(costumerUpdateDTO.getNickName());
+        if (costumerDTO.getNickName() != null
+                && !costumerDTO.getNickName().equals(costumer.getNickName())) {
+            costumer.setNickName(costumerDTO.getNickName());
         }
 
-        if (costumerUpdateDTO.getPhoneNumber() != null
-                && !costumerUpdateDTO.getPhoneNumber().equals(costumer.getPhoneNumber())) {
-            costumer.setPhoneNumber(costumerUpdateDTO.getPhoneNumber());
+        if (costumerDTO.getPhoneNumber() != null
+                && !costumerDTO.getPhoneNumber().equals(costumer.getPhoneNumber())) {
+            costumer.setPhoneNumber(costumerDTO.getPhoneNumber());
         }
 
-        return this.modelMapper.map(this.costumerRepository.save(costumer), CostumerOutputDTO.class);
+        return this.modelMapper.map(this.costumerRepository.save(costumer), CostumerDTO.class);
     }
 
     public void delete(Long id) {

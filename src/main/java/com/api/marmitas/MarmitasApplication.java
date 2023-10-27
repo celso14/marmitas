@@ -29,9 +29,9 @@ public class MarmitasApplication {
 		return args -> {
 			costumerRepository.deleteAll();
 
-			String[] firstNames = { "João", "Maria", "Pedro" };
-			String[] lastNames = { "Silva", "Santos", "Oliveira" };
-			String[] nickNames = { "Jo", "Mari", "Pedrinho" };
+			String[] firstNames = { "Mario", "Maria", "Pedro" };
+			String[] lastNames = { "Hermes", "Coco", "Birena" };
+			String[] nickNames = { "Germes", "Maca", "PV" };
 			String[] phoneNumbers = { "123-456-7890", "987-654-3210", "555-123-4567" };
 
 			for (int i = 0; i < 3; i++) {
@@ -43,17 +43,17 @@ public class MarmitasApplication {
 				c.setPhoneNumber(phoneNumbers[i]);
 
 				Address a = new Address();
-				a.setName("São Miguel");
+				a.setName("Mundurucus");
 				a.setAddressLocation("Rua");
-				a.setNumber("573");
-				a.setNeighborhood("Jurunas");
+				a.setNumber("2904");
+				a.setNeighborhood("Cremação");
 				a.setAddressType("Casa");
-				a.setReference("Entre Apinagés e Tupinanbás, apt 1501");
+				a.setReference("Entre 14 e Alcindo Cacela, apt X");
 				a.setCostumer(c);
-				a.setLat( -1.467237);
-				a.setLng(-48.485901);
+				a.setLat(-1.458482);
+				a.setLng(-48.479959);
 
-				c.getAdresses().add(a);
+				c.getAddresses().add(a);
 
 				Address a1 = new Address();
 				a1.setName("Perimetral");
@@ -63,10 +63,10 @@ public class MarmitasApplication {
 				a1.setAddressType("Trabalho");
 				a1.setReference("Espaço Inovação, Portão 5, 1º andar, Solved");
 				a1.setCostumer(c);
-				a1.setLat( -1.464091);
+				a1.setLat(-1.464091);
 				a1.setLng(-48.445366);
 
-				c.getAdresses().add(a1);
+				c.getAddresses().add(a1);
 
 				costumerRepository.save(c);
 			}
